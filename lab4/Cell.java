@@ -28,10 +28,11 @@ public class Cell {
 
     public boolean getNextState(int count){
         if( isAlive() ){
+            if (count )
             create();
         }
-        else if( count < 2 || count > 3){
-            kill();
+        else{
+
         }
     }
 
