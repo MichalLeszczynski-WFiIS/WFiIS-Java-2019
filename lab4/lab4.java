@@ -16,22 +16,14 @@ public class lab4{
         int steps = Integer.parseInt(args[2]);
         int preset = Integer.parseInt(args[3]);
 
-        System.out.println("x = " + size_x);
-        System.out.println("y = " + size_y);
+        System.out.println("x size = " + size_x);
+        System.out.println("y size = " + size_y);
         System.out.println("steps = " + steps);
         System.out.println("preset = " + preset);
 
-        Board board = new Board(size_x, size_y, preset);
-        board.print();
-        board.board[2][2] = new Cell(true);
-        board.board[2][3] = new Cell(true);
-        board.board[2][4] = new Cell(true);
-
-        board.print();
-        board.updateBoard();
-        board.print();
-        board.updateBoard();
-        board.print();
+        Board board = new Board(size_x, size_y);
+        board.load(preset);
+        board.simulate(steps);
         
     }
 }

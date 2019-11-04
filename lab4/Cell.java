@@ -10,6 +10,10 @@ public class Cell {
         this(false);    
     }
 
+    void create(){
+        this.state=true;
+    }
+
     boolean isAlive() {
         return this.state;
     }
@@ -18,22 +22,15 @@ public class Cell {
         return (this.isAlive()) ? "X" : ".";
     }
 
-    public void kill(){
-        this.state = false;
-    }
-
-    public void create(){
-        this.state = true;
-    }
-
-    public boolean getNextState(int count){
+    boolean getNextState(int count){
+        boolean next = false;
         if( isAlive() ){
-            if (count )
-            create();
+            if (count == 2 || count == 3 ) next = true;
         }
         else{
-
+            if (count == 3) next = true;
         }
+        return next;
     }
 
 }
