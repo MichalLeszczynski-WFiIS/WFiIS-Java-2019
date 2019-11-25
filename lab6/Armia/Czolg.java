@@ -1,14 +1,13 @@
 package Armia;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.lang.StringBuilder;
 
 public class Czolg {
 
-    ArrayList<Rozkaz> rozkazy = new ArrayList<Rozkaz>();
+    private ArrayList<Rozkaz> rozkazy = new ArrayList<>();
 
-    public void przyjmijRozkaz(Rozkaz rozkaz) {
+    void przyjmijRozkaz(Rozkaz rozkaz) {
         rozkazy.add(rozkaz);
     }
 
@@ -16,10 +15,10 @@ public class Czolg {
         return "Ostatni rozkaz do mnie: " + rozkazy.get(rozkazy.size()-1).getMessage();
     }
 
-    public String wszystkieRozkazy() {
+    String wszystkieRozkazy() {
         StringBuilder output = new StringBuilder();
         for(Rozkaz rozkaz : rozkazy) {
-            output.append(rozkaz + " \n");
+            output.append(rozkaz).append(" \n");
         }
         output.append(" \n");
         return output.toString();
