@@ -1,0 +1,1 @@
+class DivisionByZeroException extends ArithmeticException {}
