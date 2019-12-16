@@ -1,30 +1,27 @@
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
 
 public class lab9 {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         String[] firstLine = new String[3];
+        ArrayList<Point> points = new ArrayList<>();
         int numberOfPoints = 0;
-        Data data = new Data();
+        double epsilon = 1.0;
 
-        try {
-            BufferedReader f = new BufferedReader(new FileReader("in.txt"));
-            firstLine = f.readLine().split(" ");
-            numberOfPoints = Integer.parseInt(f.readLine());
+        BufferedReader f = new BufferedReader(new FileReader(args[0]));
+        firstLine = f.readLine().split(" ");
+        numberOfPoints = Integer.parseInt(f.readLine());
 
-            for (int i = 0; i < numberOfPoints; i++) {
-                String[] lineWithPoint = new String[2];
-                lineWithPoint = f.readLine().split(",");
-                int x = Integer.parseInt(lineWithPoint[0]);
-                int y = Integer.parseInt(lineWithPoint[1]);
+        for (int i = 0; i < numberOfPoints; i++) {
+            String[] point = new String[2];
+            point = f.readLine().split(",");
+            int x = Integer.parseInt(point[0]);
+            int y = Integer.parseInt(point[1]);
 
-                data.addPoint(new Point(x, y));
-            }
-
-        } catch (Exception e ) {
-            System.out.println(e);
+            points.add(new Point(x, y));
         }
 
         int height = Integer.parseInt(firstLine[0]);
@@ -33,42 +30,35 @@ public class lab9 {
 
 
         FileWriter writer = null;
-        try {
-            writer = new FileWriter(new File(outputName));
-            writer.write("P3\n");
-            writer.write("#Michal Leszczynski\n");
-            writer.write(new String(height + " " + width + "\n"));
-            writer.write("255\n");
+        writer = new FileWriter(new File(outputName));
+        writer.write("P3\n");
+        writer.write("#Michal Leszczynski\n");
+        writer.write(new String(height + " " + width + "\n"));
+        writer.write("255\n");
 
-            for (int currY = 0; currY < height; currY++) {
-                for (int currX = 0; currX < width; currX++) {
-                    Double[] distances = new Double[numberOfPoints];
+        for (int currY = 0; currY < height; currY++) {
+            for (int currX = 0; currX < width; currX++) {
+                ArrayList<Double> distances = new ArrayList<>();
 
-                    Point currentPoint = new Point(currX, currY);
+                Point currentPoint = new Point(currX, currY);
 
-                    for (int i = 0; i < numberOfPoints; i++) {
-                        distances[i] = currentPoint.calculateDistanceTo(data.get(i));
-                    }
-
-                    Arrays.sort( distances, Collections.reverseOrder() );
-
-                    if (Math.abs(distances[0] - distances[1]) < 1.5) {
-                        writer.write("0 0 0 ");
-                    } else {
-                        writer.write("255 255 255 ");
+                for (int i = 0; i < numberOfPoints; i++) {
+                    Point checkedPoint = points.get(i);
+                    distances.add(currentPoint.calculateDistanceTo(checkedPoint));
+                    if(checkedPoint.equals(currentPoint)) {
+                        writer.write("100 100 100 ");
                     }
                 }
-                writer.write("\n");
-            }
+                distances.sort(Double::compareTo);
 
-        } catch (IOException e) {
-            System.out.println( "Wystapil blad podczas wpisywania danych do pliku wyjsciowego " + outputName + "." );
-        } finally {
-            try {
-                writer.close();
-            } catch (IOException e) {
-                System.out.println( "Wystapil blad podczas zamykania pliku wyjsciowego " + outputName + "." );
+                if (Math.abs(distances.get(0) - distances.get(1)) < epsilon) {
+                    writer.write("0 0 0 ");
+                } else {
+                    writer.write("255 255 255 ");
+                }
             }
+            writer.write("\n");
         }
+        writer.close();
     }
 }
